@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow up with VildanaEva | Service Agreement & Confirmation</title>
+
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #8a6a44;
+            --bg: #f8f5f2;
+            --card-bg: #ffffff;
+            --border: #d7c6b2;
+            --text: #2d2a28;
+            --accent-bg: #faf6f0;
+            --success: #1b8a4b;
+        }
+        body { margin: 0; background-color: var(--bg); font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); line-height: 1.4; font-size: 13px; -webkit-tap-highlight-color: transparent; }
+        .wrap { max-width: 800px; margin: 15px auto; padding: 0 10px; }
+        .card { background: var(--card-bg); border-radius: 14px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+        
+        /* HEADER TITOLO PERSONALIZZATO */
+        .header { text-align: center; margin-bottom: 16px; border-bottom: 2px solid var(--accent-bg); padding-bottom: 10px; }
+        .title-small { display: block; font-size: 14px; color: #a3835f; font-weight: 500; font-style: italic; letter-spacing: 1px; }
+        .title-large { display: block; font-size: 26px; font-weight: bold; color: var(--primary); margin-top: -2px; }
+        .subtitle { margin-top: 2px; color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        h2 { border-bottom: 1px solid #e6d9c8; padding-bottom: 4px; color: var(--primary); font-size: 13px; margin-top: 16px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } .card { padding: 15px; } }
+        label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px; color: #666; text-transform: uppercase; }
+        .form-group { margin-bottom: 10px; }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+            width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; font-size: 13px; background: #fff;
+        }
+        input[readonly], textarea[readonly] { background-color: #faf6f0; color: #444; border-color: #dcd0c0; }
+        
+        .checks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+        .checkbox-label { display: flex; align-items: center; justify-content: space-between; font-weight: normal; font-size: 12px; background: var(--accent-bg); padding: 8px 10px; border-radius: 6px; border: 1px solid #e2d6c5; cursor: pointer; }
+        .checkbox-label input[type="checkbox"], .checkbox-label input[type="radio"] { cursor: pointer; width: 18px; height: 18px; }
+
+        /* Guest Counter - Ottimizzato per Smartphone */
+        .counter-box { display: flex; align-items: center; gap: 8px; }
+        .counter-btn { background: #8a6a44; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; user-select: none; }
+        .counter-val { font-weight: bold; font-size: 14px; width: 22px; text-align: center; }
+
+        .policy { background: var(--accent-bg); border-left: 3px solid var(--primary); padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #e2d6c5; margin: 12px 0; }
+        .policy p { margin: 2px 0; }
+        .signature-container { border: 1px dashed var(--border); border-radius: 6px; background: #fafafa; text-align: center; padding: 6px; }
+        canvas#sig-canvas { border: 1px solid #ddd; border-radius: 4px; background: #fff; touch-action: none; cursor: crosshair; width: 100%; max-width: 320px; height: 100px; }
+        
+        .btn-pay { background: #111; color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 14px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+        .btn-submit { background: var(--success); color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 14px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
+        .btn-admin { background: #2b6cb0; color: white; border: none; padding: 14px 16px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%; margin-top: 12px; }
+        
+        .note { font-size: 10px; color: #777; text-align: center; margin-top: 4px; }
+        .footer-info { text-align: center; font-size: 10px; color: #888; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
+
+        /* Admin Panel */
+        .admin-panel { background: #eef4f8; border: 2px dashed #2b6cb0; border-radius: 12px; padding: 16px; margin-bottom: 20px; display: block; }
+        .admin-panel h3 { margin-top: 0; color: #2b6cb0; font-size: 15px; }
+        .generated-link-box { display: none; margin-top: 12px; background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e0; word-break: break-all; font-size: 12px; }
+
+        /* Client Form View */
+        #client-form-container { display: none; }
+
+        /* Thank You Screen */
+        #thank-you-screen { display: none; text-align: center; padding: 30px 15px; }
+        .success-icon { font-size: 50px; color: var(--success); margin-bottom: 10px; }
+        .thank-title { font-size: 22px; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+        .thank-text { font-size: 13px; color: #555; max-width: 480px; margin: 0 auto 20px auto; }
+        .contact-box { background: var(--accent-bg); border-radius: 10px; padding: 15px; display: inline-block; text-align: left; margin-top: 10px; font-size: 12px; border: 1px solid #e2d6c5; }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <div class="card" id="main-card">
+        
+        <!-- MAIN HEADER -->
+        <div class="header">
+            <span class="title-small">Glow up with</span>
+            <span class="title-large">VildanaEva</span>
+            <div class="subtitle" id="header-subtitle">Client Service Agreement · Makeup Artist & Hairstylist</div>
+        </div>
+
+        <!-- VILDANA ADMIN PANEL -->
+        <div id="admin-section" class="admin-panel">
+            <h3>⚙️ Vildana Management Panel (Internal Use)</h3>
+            <p style="font-size: 12px; color: #4a5568;">Pre-fill details and generate the link for your client:</p>
+            
+            <div class="grid">
+                <div class="form-group">
+                    <label>Total Service Amount (€)</label>
+                    <input type="number" id="adm_total" placeholder="e.g. 600.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Deposit on SumUp (€)</label>
+                    <input type="number" id="adm_deposit" placeholder="e.g. 100.00 / 50.00 / 1.00" step="0.01">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Seleziona Link SumUp o inseriscine uno personalizzato</label>
+                <select id="adm_sumup_select" onchange="handleSumUpSelectChange()">
+                    <option value="">-- Seleziona un importo / link rapido --</option>
+                    <option value="https://pay.sumup.com/b2c/Q7YON3CO">Deposito 100 €</option>
+                    <option value="https://pay.sumup.com/b2c/QN608LIM">Deposito 50 €</option>
+                    <option value="https://pay.sumup.com/b2c/QZFSV6MG">Test 1 €</option>
+                    <option value="custom">Altro link personalizzato...</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="custom-url-group" style="display: none;">
+                <label>Inserisci URL personalizzato:</label>
+                <input type="text" id="adm_sumup_url" placeholder="https://pay.sumup.com/b2c/...">
+            </div>
+
+            <div class="grid">
+                <div class="form-group">
+                    <label>Service Start Time</label>
+                    <input type="time" id="adm_start_time">
+                </div>
+                <div class="form-group">
+                    <label>Expected End Time</label>
+                    <input type="time" id="adm_ready_time">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Service Location Address</label>
+                <input type="text" id="adm_address" placeholder="e.g. Via Roma 10, Milan / Hotel Name">
+            </div>
+
+            <label>Services Included in Agreement:</label>
+            <div class="checks-grid" style="margin-bottom: 12px;">
+                <div class="checkbox-label">
+                    <span>Bride Makeup</span>
+                    <input type="checkbox" class="adm-service-check" value="Bride Makeup">
+                </div>
+                <div class="checkbox-label">
+                    <span>Bride Hairstyle</span>
+                    <input type="checkbox" class="adm-service-check" value="Bride Hairstyle">
+                </div>
+                
+                <div class="checkbox-label">
+                    <span>Guest/Event Makeup</span>
+                    <div class="counter-box">
+                        <button type="button" class="counter-btn" id="btn-minus-mu">-</button>
+                        <span class="counter-val" id="guest_mu">0</span>
+                        <button type="button" class="counter-btn" id="btn-plus-mu">+</button>
+                    </div>
+                </div>
+                <div class="checkbox-label">
+                    <span>Guest/Event Hairstyle</span>
+                    <div class="counter-box">
+                        <button type="button" class="counter-btn" id="btn-minus-hair">-</button>
+                        <span class="counter-val" id="guest_hair">0</span>
+                        <button type="button" class="counter-btn" id="btn-plus-hair">+</button>
+                    </div>
+                </div>
+
+                <div class="checkbox-label">
+                    <span>Photoshoot Total Glam</span>
+                    <input type="checkbox" class="adm-service-check" value="Photoshoot Total Glam">
+                </div>
+                <div class="checkbox-label">
+                    <span>Photoshoot Makeup</span>
+                    <input type="checkbox" class="adm-service-check" value="Photoshoot Makeup">
+                </div>
+            </div>
+
+            <button type="button" class="btn-admin" id="btn-create-contract">✨ Generate Client Agreement Link</button>
+
+            <div id="link-box" class="generated-link-box">
+                <strong>Link Generated Successfully!</strong>
+                <p style="margin: 6px 0;">Test the link directly or copy it for your client:</p>
+                <div style="margin-bottom: 8px;">
+                    <a id="generated-anchor" href="#" target="_blank" style="color: #2b6cb0; font-weight: bold; word-break: break-all; text-decoration: underline;">Apri link in una nuova scheda</a>
+                </div>
+                <button type="button" id="btn-copy-link" style="background: #edf2f7; border: 1px solid #cbd5e0; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">📋 Copy Link</button>
+            </div>
+        </div>
+
+        <!-- CLIENT FORM VIEW -->
+        <div id="client-form-container">
+            <div id="printable-contract-area">
+                <form id="contract-form" onsubmit="return false;">
+                    <h2>1. Agreed Service & Schedule</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label>Total Amount (€)</label>
+                            <input type="number" id="client_total" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Deposit Paid / Payable via SumUp (€)</label>
+                            <input type="number" id="client_deposit" readonly style="font-weight: bold; color: var(--primary);">
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="form-group">
+                            <label>Service Start Time</label>
+                            <input type="time" id="start_time" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Expected End Time</label>
+                            <input type="time" id="ready_time" readonly>
+                        </div>
+                    </div>
+
+                    <label>Included Services:</label>
+                    <div id="services-display" class="checks-grid" style="margin-bottom: 12px;"></div>
+
+                    <h2>2. Client Personal Information</h2>
+                    <div class="grid">
+                        <div class="form-group"><label>Full Name *</label><input type="text" id="fullname" required></div>
+                        <div class="form-group"><label>Email for Agreement Copy *</label><input type="email" id="client_email" placeholder="name@email.com" required></div>
+                        <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" required></div>
+                        <div class="form-group"><label>Emergency Contact *</label><input type="text" id="emergency" required placeholder="Name & Phone Number"></div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="form-group"><label>Service Date *</label><input type="date" id="service_date" required></div>
+                        <div class="form-group"><label>Service Location Address *</label><input type="text" id="address" readonly required></div>
+                    </div>
+
+                    <h2>3. Health Information</h2>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <span>I have allergies or sensitivities to skin/hair products</span>
+                            <input type="checkbox" id="has_allergies">
+                        </label>
+                    </div>
+                    <div class="form-group" id="allergy-details-group" style="display: none; margin-top: 6px;">
+                        <label>Please specify your allergies or sensitivities:</label>
+                        <input type="text" id="allergy_notes" placeholder="e.g. Latex, specific fragrances, nuts...">
+                    </div>
+
+                    <h2>4. Photo Consent & Terms</h2>
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; background: var(--accent-bg); padding: 10px; border-radius: 6px; border: 1px solid #e2d6c5;">
+                        <label style="margin:0; font-weight:normal;">Consent for portfolio photos/social media use:</label>
+                        <div style="display:flex; gap:15px;">
+                            <label style="margin:0; display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="radio" name="photo_consent" value="Yes" checked> Yes</label>
+                            <label style="margin:0; display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="radio" name="photo_consent" value="No"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="policy">
+                        <p><b>Cancellation Policy:</b> Up to 30 days prior: no extra penalty (deposit non-refundable). 29-15 days prior: 50% of total. Within 14 days: 100% of total. Force majeure substitution applies if needed.</p>
+                    </div>
+
+                    <h2>5. Signature & Acceptance</h2>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <span>I confirm the details are correct and accept the terms and conditions. *</span>
+                            <input type="checkbox" id="terms_check" required>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Digital Signature (Draw below) *</label>
+                        <div class="signature-container">
+                            <img id="sig-image-display" src="" alt="Digital Signature" style="max-width: 320px; height: 80px; object-fit: contain; display:none; margin: 0 auto; border: 1px solid #ddd; background: #fff; border-radius: 4px;">
+                            <canvas id="sig-canvas" width="320" height="100"></canvas>
+                            <div><button type="button" id="sig-clearBtn" style="background:none;border:none;color:red;font-size:12px;cursor:pointer;margin-top:6px;padding:6px;">Clear Signature</button></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- BOTTONI E SEZIONI INTERATTIVE -->
+            <div style="margin-top: 16px;">
+                <div id="payment-section">
+                    <button type="button" class="btn-pay" id="pay-btn">💳 Pay Deposit via SumUp</button>
+                    <div class="note">Si aprirà una nuova pagina per completare il pagamento su SumUp in sicurezza.</div>
+                </div>
+
+                <div id="download-section" style="display: none;">
+                    <button type="button" class="btn-submit" id="submit-btn">✓ Download Signed PDF Agreement</button>
+                    <div class="note" id="submit-note">Pagamento completato! Scarica la copia del tuo accordo.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THANK YOU SCREEN -->
+        <div id="thank-you-screen">
+            <div class="success-icon">✨</div>
+            <div class="thank-title">Thank You! Agreement Downloaded</div>
+            <div class="thank-text">
+                Your signed agreement PDF has been downloaded to your device. Your booking is now officially secured.
+            </div>
+
+            <div class="contact-box">
+                <strong style="color: var(--primary);">Have questions or special requests?</strong><br>
+                • <b>Phone / WhatsApp:</b> +39 3391665164<br>
+                • <b>Email:</b> info@vildanaeva.com<br>
+                • <b>Website:</b> www.vildanaeva.com
+            </div>
+        </div>
+
+        <div class="footer-info">
+            VildanaEva by Vildana Hiluku · Tel. +39 3391665164 · info@vildanaeva.com · VAT ID 10051701216
+        </div>
+    </div>
+</div>
+
+<script>
+    // Gestione contatori guests con eventi nativi indipendenti
+    function setupCounter(minusId, plusId, valId) {
+        const minusBtn = document.getElementById(minusId);
+        const plusBtn = document.getElementById(plusId);
+        const valSpan = document.getElementById(valId);
+
+        const change = (delta) => {
+            let val = parseInt(valSpan.innerText) + delta;
+            if (val < 0) val = 0;
+            valSpan.innerText = val;
+        };
+
+        minusBtn.onclick = (e) => { e.preventDefault(); change(-1); };
+        plusBtn.onclick = (e) => { e.preventDefault(); change(1); };
+        minusBtn.ontouchend = (e) => { e.preventDefault(); change(-1); };
+        plusBtn.ontouchend = (e) => { e.preventDefault(); change(1); };
+    }
+
+    setupCounter('btn-minus-mu', 'btn-plus-mu', 'guest_mu');
+    setupCounter('btn-minus-hair', 'btn-plus-hair', 'guest_hair');
+
+    function handleSumUpSelectChange() {
+        const select = document.getElementById("adm_sumup_select");
+        const customGroup = document.getElementById("custom-url-group");
+        if (select.value === "custom") {
+            customGroup.style.display = "block";
+        } else {
+            customGroup.style.display = "none";
+            document.getElementById("adm_sumup_url").value = "";
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const totalVal = urlParams.get("tot");
+    const depVal = urlParams.get("dep");
+    const isPaid = urlParams.get("paid") === "true";
+
+    if (totalVal && depVal) {
+        document.getElementById("admin-section").style.display = "none";
+        document.getElementById("client-form-container").style.display = "block";
+
+        document.getElementById("client_total").value = totalVal;
+        document.getElementById("client_deposit").value = depVal;
+        
+        const startTimeVal = urlParams.get("stime");
+        const readyTimeVal = urlParams.get("rtime");
+        if (startTimeVal) document.getElementById("start_time").value = startTimeVal;
+        if (readyTimeVal) document.getElementById("ready_time").value = readyTimeVal;
+
+        const addressVal = urlParams.get("addr");
+        if (addressVal) document.getElementById("address").value = decodeURIComponent(addressVal);
+
+        const servicesVal = urlParams.get("srv");
+        const srvContainer = document.getElementById("services-display");
+        const list = servicesVal ? servicesVal.split(",") : [];
+        if(list.length > 0) {
+            list.forEach(srv => {
+                srvContainer.innerHTML += `<div class="checkbox-label" style="background:#faf6f0; font-weight:bold;">✓ ${decodeURIComponent(srv)}</div>`;
+            });
+        }
+
+        if (isPaid) {
+            document.getElementById("payment-section").style.display = "none";
+            document.getElementById("download-section").style.display = "block";
+
+            document.getElementById("has_allergies").disabled = true;
+            document.getElementById("allergy_notes").readOnly = true;
+            document.getElementById("terms_check").checked = true;
+            document.getElementById("terms_check").disabled = true;
+            
+            const radios = document.querySelectorAll('input[name="photo_consent"]');
+            radios.forEach(r => r.disabled = true);
+
+            const savedData = JSON.parse(localStorage.getItem("vildana_client_data") || "{}");
+            if (savedData.fullname) document.getElementById("fullname").value = savedData.fullname;
+            if (savedData.email) document.getElementById("client_email").value = savedData.email;
+            if (savedData.phone) document.getElementById("phone").value = savedData.phone;
+            if (savedData.emergency) document.getElementById("emergency").value = savedData.emergency;
+            if (savedData.service_date) document.getElementById("service_date").value = savedData.service_date;
+            
+            if (savedData.has_allergies) {
+                document.getElementById("has_allergies").checked = true;
+                document.getElementById("allergy-details-group").style.display = "block";
+                document.getElementById("allergy_notes").value = savedData.allergy_notes || "";
+            }
+            if (savedData.photo_consent) {
+                const radio = document.querySelector(`input[name="photo_consent"][value="${savedData.photo_consent}"]`);
+                if (radio) radio.checked = true;
+            }
+            if (savedData.signatureData) {
+                const img = document.getElementById("sig-image-display");
+                img.src = savedData.signatureData;
+                img.style.display = "block";
+                document.getElementById("sig-canvas").style.display = "none";
+                document.getElementById("sig-clearBtn").parentElement.style.display = "none";
+            }
+        }
+    } else {
+        document.getElementById("admin-section").style.display = "block";
+        document.getElementById("client-form-container").style.display = "none";
+    }
+
+    let generatedUrlStorage = "";
+    document.getElementById("btn-create-contract").onclick = function() {
+        const tot = document.getElementById("adm_total").value;
+        const dep = document.getElementById("adm_deposit").value;
+        
+        const selectVal = document.getElementById("adm_sumup_select").value;
+        let sumupUrl = selectVal === "custom" ? document.getElementById("adm_sumup_url").value.trim() : selectVal;
+
+        const stime = document.getElementById("adm_start_time").value;
+        const rtime = document.getElementById("adm_ready_time").value;
+        const addr = document.getElementById("adm_address").value;
+        
+        const selectedServices = [];
+        document.querySelectorAll('.adm-service-check:checked').forEach(cb => {
+            selectedServices.push(cb.value);
+        });
+
+        const gMu = parseInt(document.getElementById("guest_mu").innerText);
+        if(gMu > 0) selectedServices.push(`Guest Makeup (${gMu} guest${gMu > 1 ? 's' : ''})`);
+
+        const gHair = parseInt(document.getElementById("guest_hair").innerText);
+        if(gHair > 0) selectedServices.push(`Guest Hairstyle (${gHair} guest${gHair > 1 ? 's' : ''})`);
+
+        if(!tot || !dep) {
+            alert("Please enter the Total Amount and Deposit before generating the link.");
+            return;
+        }
+
+        const baseUrl = window.location.href.split('?')[0].split('#')[0];
+        const srvParam = encodeURIComponent(selectedServices.join(","));
+        const addrParam = encodeURIComponent(addr);
+        
+        generatedUrlStorage = `${baseUrl}?tot=${tot}&dep=${dep}&stime=${stime}&rtime=${rtime}&addr=${addrParam}&srv=${srvParam}`;
+        if(sumupUrl) {
+            generatedUrlStorage += `&sumup=${encodeURIComponent(sumupUrl)}`;
+        }
+
+        const anchor = document.getElementById("generated-anchor");
+        anchor.href = generatedUrlStorage;
+        anchor.innerText = generatedUrlStorage;
+
+        document.getElementById("link-box").style.display = "block";
+    };
+
+    document.getElementById("btn-copy-link").onclick = function() {
+        if(!generatedUrlStorage) return;
+        navigator.clipboard.writeText(generatedUrlStorage).then(() => {
+            alert("Link copied to clipboard!");
+        });
+    };
+
+    const hasAllergiesCheckbox = document.getElementById("has_allergies");
+    const allergyDetailsGroup = document.getElementById("allergy-details-group");
+    hasAllergiesCheckbox.onchange = function() {
+        if (this.checked) {
+            allergyDetailsGroup.style.display = "block";
+        } else {
+            allergyDetailsGroup.style.display = "none";
+            document.getElementById("allergy_notes").value = "";
+        }
+    };
+
+    const canvas = document.getElementById("sig-canvas");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#2d2a28";
+    }
+    window.onload = resizeCanvas;
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.onmousedown = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    canvas.onmousemove = (e) => { if(drawing){ e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); } };
+    canvas.onmouseup = () => drawing = false;
+
+    canvas.ontouchstart = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    canvas.ontouchmove = (e) => { if(drawing){ e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); } };
+    canvas.ontouchend = () => drawing = false;
+    
+    document.getElementById("sig-clearBtn").onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    document.getElementById("pay-btn").onclick = function() {
+        const name = document.getElementById("fullname").value;
+        const email = document.getElementById("client_email").value;
+        const phone = document.getElementById("phone").value;
+        const emergency = document.getElementById("emergency").value;
+        const serviceDate = document.getElementById("service_date").value;
+        const address = document.getElementById("address").value;
+        const terms = document.getElementById("terms_check").checked;
+
+        if (!name || !email || !phone || !emergency || !serviceDate || !address || !terms) {
+            alert("Per favore, compila tutti i campi obbligatori e accetta i termini prima di procedere al pagamento.");
+            return;
+        }
+
+        const signatureDataUrl = canvas.toDataURL("image/png");
+
+        const clientData = {
+            fullname: name,
+            email: email,
+            phone: phone,
+            emergency: emergency,
+            service_date: serviceDate,
+            has_allergies: hasAllergiesCheckbox.checked,
+            allergy_notes: document.getElementById("allergy_notes").value,
+            photo_consent: document.querySelector('input[name="photo_consent"]:checked').value,
+            signatureData: signatureDataUrl
+        };
+        localStorage.setItem("vildana_client_data", JSON.stringify(clientData));
+
+        const customSumup = urlParams.get("sumup");
+        const targetSumupUrl = customSumup ? decodeURIComponent(customSumup) : "https://pay.sumup.com/b2c/Q7YON3CO";
+
+        window.open(targetSumupUrl, '_blank');
+
+        const currentUrlWithPaid = window.location.href + (window.location.href.includes('&paid=true') ? '' : '&paid=true');
+        window.history.replaceState(null, '', currentUrlWithPaid);
+
+        alert("Si è aperta una nuova scheda per il pagamento su SumUp. Una volta completato il pagamento, torna qui su questa scheda: il contratto si sbloccherà automaticamente per farti scaricare il PDF.");
+    };
+
+    document.getElementById("submit-btn").onclick = function() {
+        document.getElementById("header-subtitle").innerText = "Riepilogo Accordo di Servizio (Copia Cliente)";
+
+        const element = document.getElementById('printable-contract-area');
+        const opt = {
+            margin:       [0.4, 0.4, 0.4, 0.4],
+            filename:     'Agreement_VildanaEva.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            localStorage.removeItem("vildana_client_data");
+            document.getElementById("client-form-container").style.display = "none";
+            document.getElementById("thank-you-screen").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    };
+</script>
+
+</body>
+</html>
