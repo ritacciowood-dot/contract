@@ -333,4 +333,238 @@
     function handleSumUpSelectChange() {
         const select = document.getElementById("adm_sumup_select");
         const customGroup = document.getElementById("custom-url-group");
-        if (select.value === "custom")
+        if (select.value === "custom") {
+            customGroup.style.display = "block";
+        } else {
+            customGroup.style.display = "none";
+            document.getElementById("adm_sumup_url").value = "";
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const totalVal = urlParams.get("tot");
+    const depVal = urlParams.get("dep");
+    const isPaid = urlParams.get("paid") === "true";
+
+    if (totalVal && depVal) {
+        document.getElementById("admin-section").style.display = "none";
+        document.getElementById("client-form-container").style.display = "block";
+
+        document.getElementById("client_total").value = totalVal;
+        document.getElementById("client_deposit").value = depVal;
+        
+        const startTimeVal = urlParams.get("stime");
+        const readyTimeVal = urlParams.get("rtime");
+        if (startTimeVal) document.getElementById("start_time").value = startTimeVal;
+        if (readyTimeVal) document.getElementById("ready_time").value = readyTimeVal;
+
+        const addressVal = urlParams.get("addr");
+        if (addressVal) document.getElementById("address").value = decodeURIComponent(addressVal);
+
+        const servicesVal = urlParams.get("srv");
+        const srvContainer = document.getElementById("services-display");
+        const list = servicesVal ? servicesVal.split(",") : [];
+        if(list.length > 0) {
+            list.forEach(srv => {
+                srvContainer.innerHTML += `<div class="checkbox-label" style="background:#faf6f0; font-weight:bold;">✓ ${decodeURIComponent(srv)}</div>`;
+            });
+        }
+
+        if (isPaid) {
+            document.getElementById("payment-section").style.display = "none";
+            document.getElementById("download-section").style.display = "block";
+
+            document.getElementById("has_allergies").disabled = true;
+            document.getElementById("allergy_notes").readOnly = true;
+            document.getElementById("terms_check").checked = true;
+            document.getElementById("terms_check").disabled = true;
+            
+            const radios = document.querySelectorAll('input[name="photo_consent"]');
+            radios.forEach(r => r.disabled = true);
+
+            const savedData = JSON.parse(localStorage.getItem("vildana_client_data") || "{}");
+            if (savedData.fullname) document.getElementById("fullname").value = savedData.fullname;
+            if (savedData.email) document.getElementById("client_email").value = savedData.email;
+            if (savedData.phone) document.getElementById("phone").value = savedData.phone;
+            if (savedData.emergency) document.getElementById("emergency").value = savedData.emergency;
+            if (savedData.service_date) document.getElementById("service_date").value = savedData.service_date;
+            
+            if (savedData.has_allergies) {
+                document.getElementById("has_allergies").checked = true;
+                document.getElementById("allergy-details-group").style.display = "block";
+                document.getElementById("allergy_notes").value = savedData.allergy_notes || "";
+            }
+            if (savedData.photo_consent) {
+                const radio = document.querySelector(`input[name="photo_consent"][value="${savedData.photo_consent}"]`);
+                if (radio) radio.checked = true;
+            }
+            if (savedData.signatureData) {
+                const img = document.getElementById("sig-image-display");
+                img.src = savedData.signatureData;
+                img.style.display = "block";
+                document.getElementById("sig-canvas").style.display = "none";
+                document.getElementById("sig-clearBtn").parentElement.style.display = "none";
+            }
+        }
+    } else {
+        document.getElementById("admin-section").style.display = "block";
+        document.getElementById("client-form-container").style.display = "none";
+    }
+
+    let generatedUrlStorage = "";
+    document.getElementById("btn-create-contract").onclick = function() {
+        const tot = document.getElementById("adm_total").value;
+        const dep = document.getElementById("adm_deposit").value;
+        
+        const selectVal = document.getElementById("adm_sumup_select").value;
+        let sumupUrl = selectVal === "custom" ? document.getElementById("adm_sumup_url").value.trim() : selectVal;
+
+        const stime = document.getElementById("adm_start_time").value;
+        const rtime = document.getElementById("adm_ready_time").value;
+        const addr = document.getElementById("adm_address").value;
+        
+        const selectedServices = [];
+        document.querySelectorAll('.adm-service-check:checked').forEach(cb => {
+            selectedServices.push(cb.value);
+        });
+
+        const gMu = parseInt(document.getElementById("guest_mu").innerText);
+        if(gMu > 0) selectedServices.push(`Guest Makeup (${gMu} guest${gMu > 1 ? 's' : ''})`);
+
+        const gHair = parseInt(document.getElementById("guest_hair").innerText);
+        if(gHair > 0) selectedServices.push(`Guest Hairstyle (${gHair} guest${gHair > 1 ? 's' : ''})`);
+
+        if(!tot || !dep) {
+            alert("Please enter the Total Amount and Deposit before generating the link.");
+            return;
+        }
+
+        const baseUrl = window.location.href.split('?')[0].split('#')[0];
+        const srvParam = encodeURIComponent(selectedServices.join(","));
+        const addrParam = encodeURIComponent(addr);
+        
+        generatedUrlStorage = `${baseUrl}?tot=${tot}&dep=${dep}&stime=${stime}&rtime=${rtime}&addr=${addrParam}&srv=${srvParam}`;
+        if(sumupUrl) {
+            generatedUrlStorage += `&sumup=${encodeURIComponent(sumupUrl)}`;
+        }
+
+        const anchor = document.getElementById("generated-anchor");
+        anchor.href = generatedUrlStorage;
+        anchor.innerText = generatedUrlStorage;
+
+        document.getElementById("link-box").style.display = "block";
+    };
+
+    document.getElementById("btn-copy-link").onclick = function() {
+        if(!generatedUrlStorage) return;
+        navigator.clipboard.writeText(generatedUrlStorage).then(() => {
+            alert("Link copied to clipboard!");
+        });
+    };
+
+    const hasAllergiesCheckbox = document.getElementById("has_allergies");
+    const allergyDetailsGroup = document.getElementById("allergy-details-group");
+    hasAllergiesCheckbox.onchange = function() {
+        if (this.checked) {
+            allergyDetailsGroup.style.display = "block";
+        } else {
+            allergyDetailsGroup.style.display = "none";
+            document.getElementById("allergy_notes").value = "";
+        }
+    };
+
+    const canvas = document.getElementById("sig-canvas");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#2d2a28";
+    }
+    window.onload = resizeCanvas;
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.onmousedown = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    canvas.onmousemove = (e) => { if(drawing){ e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); } };
+    canvas.onmouseup = () => drawing = false;
+
+    canvas.ontouchstart = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    canvas.ontouchmove = (e) => { if(drawing){ e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); } };
+    canvas.ontouchend = () => drawing = false;
+    
+    document.getElementById("sig-clearBtn").onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    document.getElementById("pay-btn").onclick = function() {
+        const name = document.getElementById("fullname").value;
+        const email = document.getElementById("client_email").value;
+        const phone = document.getElementById("phone").value;
+        const emergency = document.getElementById("emergency").value;
+        const serviceDate = document.getElementById("service_date").value;
+        const address = document.getElementById("address").value;
+        const terms = document.getElementById("terms_check").checked;
+
+        if (!name || !email || !phone || !emergency || !serviceDate || !address || !terms) {
+            alert("Per favore, compila tutti i campi obbligatori e accetta i termini prima di procedere al pagamento.");
+            return;
+        }
+
+        const signatureDataUrl = canvas.toDataURL("image/png");
+
+        const clientData = {
+            fullname: name,
+            email: email,
+            phone: phone,
+            emergency: emergency,
+            service_date: serviceDate,
+            has_allergies: hasAllergiesCheckbox.checked,
+            allergy_notes: document.getElementById("allergy_notes").value,
+            photo_consent: document.querySelector('input[name="photo_consent"]:checked').value,
+            signatureData: signatureDataUrl
+        };
+        localStorage.setItem("vildana_client_data", JSON.stringify(clientData));
+
+        const customSumup = urlParams.get("sumup");
+        const targetSumupUrl = customSumup ? decodeURIComponent(customSumup) : "https://pay.sumup.com/b2c/Q7YON3CO";
+
+        window.open(targetSumupUrl, '_blank');
+
+        const currentUrlWithPaid = window.location.href + (window.location.href.includes('&paid=true') ? '' : '&paid=true');
+        window.history.replaceState(null, '', currentUrlWithPaid);
+
+        alert("Si è aperta una nuova scheda per il pagamento su SumUp. Una volta completato il pagamento, torna qui su questa scheda: il contratto si sbloccherà automaticamente per farti scaricare il PDF.");
+    };
+
+    document.getElementById("submit-btn").onclick = function() {
+        document.getElementById("header-subtitle").innerText = "Riepilogo Accordo di Servizio (Copia Cliente)";
+
+        const element = document.getElementById('printable-contract-area');
+        const opt = {
+            margin:       [0.4, 0.4, 0.4, 0.4],
+            filename:     'Agreement_VildanaEva.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            localStorage.removeItem("vildana_client_data");
+            document.getElementById("client-form-container").style.display = "none";
+            document.getElementById("thank-you-screen").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    };
+</script>
+
+</body>
+</html>
