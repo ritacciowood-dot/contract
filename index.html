@@ -18,7 +18,7 @@
             --accent-bg: #faf6f0;
             --success: #1b8a4b;
         }
-        body { margin: 0; background-color: var(--bg); font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); line-height: 1.4; font-size: 13px; }
+        body { margin: 0; background-color: var(--bg); font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); line-height: 1.4; font-size: 13px; -webkit-tap-highlight-color: transparent; }
         .wrap { max-width: 800px; margin: 15px auto; padding: 0 10px; }
         .card { background: var(--card-bg); border-radius: 14px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border); }
         
@@ -31,37 +31,37 @@
         h2 { border-bottom: 1px solid #e6d9c8; padding-bottom: 4px; color: var(--primary); font-size: 13px; margin-top: 16px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } .card { padding: 15px; } }
-        label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px; color: #666; text-transform: uppercase; cursor: pointer; }
+        label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px; color: #666; text-transform: uppercase; }
         .form-group { margin-bottom: 10px; }
         input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
-            width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; font-size: 12px; background: #fff; cursor: pointer;
+            width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; font-size: 13px; background: #fff;
         }
-        input[readonly], textarea[readonly] { background-color: #faf6f0; color: #444; cursor: not-allowed; border-color: #dcd0c0; }
+        input[readonly], textarea[readonly] { background-color: #faf6f0; color: #444; border-color: #dcd0c0; }
         
         .checks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
-        .checkbox-label { display: flex; align-items: center; justify-content: space-between; font-weight: normal; font-size: 12px; background: var(--accent-bg); padding: 7px 10px; border-radius: 6px; border: 1px solid #e2d6c5; cursor: pointer; }
-        .checkbox-label input[type="checkbox"] { cursor: pointer; }
+        .checkbox-label { display: flex; align-items: center; justify-content: space-between; font-weight: normal; font-size: 12px; background: var(--accent-bg); padding: 8px 10px; border-radius: 6px; border: 1px solid #e2d6c5; cursor: pointer; }
+        .checkbox-label input[type="checkbox"], .checkbox-label input[type="radio"] { cursor: pointer; width: 18px; height: 18px; }
 
-        /* Guest Counter */
-        .counter-box { display: flex; align-items: center; gap: 6px; }
-        .counter-btn { background: #8a6a44; color: white; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 14px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; z-index: 10; position: relative; }
-        .counter-val { font-weight: bold; font-size: 13px; width: 18px; text-align: center; }
+        /* Guest Counter - Ottimizzato per Smartphone */
+        .counter-box { display: flex; align-items: center; gap: 8px; }
+        .counter-btn { background: #8a6a44; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; user-select: none; }
+        .counter-val { font-weight: bold; font-size: 14px; width: 22px; text-align: center; }
 
         .policy { background: var(--accent-bg); border-left: 3px solid var(--primary); padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #e2d6c5; margin: 12px 0; }
         .policy p { margin: 2px 0; }
         .signature-container { border: 1px dashed var(--border); border-radius: 6px; background: #fafafa; text-align: center; padding: 6px; }
         canvas#sig-canvas { border: 1px solid #ddd; border-radius: 4px; background: #fff; touch-action: none; cursor: crosshair; width: 100%; max-width: 320px; height: 100px; }
         
-        .btn-pay { background: #111; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: bold; width: 100%; cursor: pointer; }
-        .btn-submit { background: var(--success); color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: bold; width: 100%; margin-top: 8px; cursor: pointer; }
+        .btn-pay { background: #111; color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 14px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+        .btn-submit { background: var(--success); color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 14px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
+        .btn-admin { background: #2b6cb0; color: white; border: none; padding: 14px 16px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%; margin-top: 12px; }
         
         .note { font-size: 10px; color: #777; text-align: center; margin-top: 4px; }
         .footer-info { text-align: center; font-size: 10px; color: #888; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
 
         /* Admin Panel */
-        .admin-panel { background: #eef4f8; border: 2px dashed #2b6cb0; border-radius: 12px; padding: 16px; margin-bottom: 20px; display: block; position: relative; z-index: 5; }
+        .admin-panel { background: #eef4f8; border: 2px dashed #2b6cb0; border-radius: 12px; padding: 16px; margin-bottom: 20px; display: block; }
         .admin-panel h3 { margin-top: 0; color: #2b6cb0; font-size: 15px; }
-        .btn-admin { background: #2b6cb0; color: white; border: none; padding: 12px 16px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 13px; width: 100%; margin-top: 10px; z-index: 10; position: relative; }
         .generated-link-box { display: none; margin-top: 12px; background: #fff; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e0; word-break: break-all; font-size: 12px; }
 
         /* Client Form View */
@@ -149,17 +149,17 @@
                 <div class="checkbox-label">
                     <span>Guest/Event Makeup</span>
                     <div class="counter-box">
-                        <button type="button" class="counter-btn" onclick="changeQty('guest_mu', -1)">-</button>
+                        <button type="button" class="counter-btn" id="btn-minus-mu">-</button>
                         <span class="counter-val" id="guest_mu">0</span>
-                        <button type="button" class="counter-btn" onclick="changeQty('guest_mu', 1)">+</button>
+                        <button type="button" class="counter-btn" id="btn-plus-mu">+</button>
                     </div>
                 </div>
                 <div class="checkbox-label">
                     <span>Guest/Event Hairstyle</span>
                     <div class="counter-box">
-                        <button type="button" class="counter-btn" onclick="changeQty('guest_hair', -1)">-</button>
+                        <button type="button" class="counter-btn" id="btn-minus-hair">-</button>
                         <span class="counter-val" id="guest_hair">0</span>
-                        <button type="button" class="counter-btn" onclick="changeQty('guest_hair', 1)">+</button>
+                        <button type="button" class="counter-btn" id="btn-plus-hair">+</button>
                     </div>
                 </div>
 
@@ -181,7 +181,7 @@
                 <div style="margin-bottom: 8px;">
                     <a id="generated-anchor" href="#" target="_blank" style="color: #2b6cb0; font-weight: bold; word-break: break-all; text-decoration: underline;">Apri link in una nuova scheda</a>
                 </div>
-                <button type="button" onclick="copyLink()" style="background: #edf2f7; border: 1px solid #cbd5e0; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">📋 Copy Link</button>
+                <button type="button" id="btn-copy-link" style="background: #edf2f7; border: 1px solid #cbd5e0; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">📋 Copy Link</button>
             </div>
         </div>
 
@@ -230,8 +230,9 @@
 
                     <h2>3. Health Information</h2>
                     <div class="form-group">
-                        <label class="checkbox-label" style="justify-content:flex-start; gap:8px;">
-                            <input type="checkbox" id="has_allergies"> I have allergies or sensitivities to skin/hair products
+                        <label class="checkbox-label">
+                            <span>I have allergies or sensitivities to skin/hair products</span>
+                            <input type="checkbox" id="has_allergies">
                         </label>
                     </div>
                     <div class="form-group" id="allergy-details-group" style="display: none; margin-top: 6px;">
@@ -240,11 +241,11 @@
                     </div>
 
                     <h2>4. Photo Consent & Terms</h2>
-                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; background: var(--accent-bg); padding: 8px 10px; border-radius: 6px; border: 1px solid #e2d6c5;">
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; background: var(--accent-bg); padding: 10px; border-radius: 6px; border: 1px solid #e2d6c5;">
                         <label style="margin:0; font-weight:normal;">Consent for portfolio photos/social media use:</label>
-                        <div style="display:flex; gap:12px;" id="consent-options-container">
-                            <label style="margin:0;"><input type="radio" name="photo_consent" value="Yes" checked> Yes</label>
-                            <label style="margin:0;"><input type="radio" name="photo_consent" value="No"> No</label>
+                        <div style="display:flex; gap:15px;">
+                            <label style="margin:0; display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="radio" name="photo_consent" value="Yes" checked> Yes</label>
+                            <label style="margin:0; display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="radio" name="photo_consent" value="No"> No</label>
                         </div>
                     </div>
 
@@ -254,8 +255,9 @@
 
                     <h2>5. Signature & Acceptance</h2>
                     <div class="form-group">
-                        <label class="checkbox-label" style="background:#fff3e0; border:1px solid #ffe0b2; justify-content:flex-start; gap:8px;">
-                            <input type="checkbox" id="terms_check" required> I confirm the details are correct and accept the terms and conditions. *
+                        <label class="checkbox-label">
+                            <span>I confirm the details are correct and accept the terms and conditions. *</span>
+                            <input type="checkbox" id="terms_check" required>
                         </label>
                     </div>
 
@@ -264,7 +266,7 @@
                         <div class="signature-container">
                             <img id="sig-image-display" src="" alt="Digital Signature" style="max-width: 320px; height: 80px; object-fit: contain; display:none; margin: 0 auto; border: 1px solid #ddd; background: #fff; border-radius: 4px;">
                             <canvas id="sig-canvas" width="320" height="100"></canvas>
-                            <div><button type="button" id="sig-clearBtn" style="background:none;border:none;color:red;font-size:11px;cursor:pointer;margin-top:4px;">Clear Signature</button></div>
+                            <div><button type="button" id="sig-clearBtn" style="background:none;border:none;color:red;font-size:12px;cursor:pointer;margin-top:6px;padding:6px;">Clear Signature</button></div>
                         </div>
                     </div>
                 </form>
@@ -307,31 +309,28 @@
 </div>
 
 <script>
-    function changeQty(id, delta) {
-        const el = document.getElementById(id);
-        let val = parseInt(el.innerText) + delta;
-        if (val < 0) val = 0;
-        el.innerText = val;
+    // Gestione contatori guests con eventi nativi indipendenti
+    function setupCounter(minusId, plusId, valId) {
+        const minusBtn = document.getElementById(minusId);
+        const plusBtn = document.getElementById(plusId);
+        const valSpan = document.getElementById(valId);
+
+        const change = (delta) => {
+            let val = parseInt(valSpan.innerText) + delta;
+            if (val < 0) val = 0;
+            valSpan.innerText = val;
+        };
+
+        minusBtn.onclick = (e) => { e.preventDefault(); change(-1); };
+        plusBtn.onclick = (e) => { e.preventDefault(); change(1); };
+        minusBtn.ontouchend = (e) => { e.preventDefault(); change(-1); };
+        plusBtn.ontouchend = (e) => { e.preventDefault(); change(1); };
     }
+
+    setupCounter('btn-minus-mu', 'btn-plus-mu', 'guest_mu');
+    setupCounter('btn-minus-hair', 'btn-plus-hair', 'guest_hair');
 
     function handleSumUpSelectChange() {
         const select = document.getElementById("adm_sumup_select");
         const customGroup = document.getElementById("custom-url-group");
-        if (select.value === "custom") {
-            customGroup.style.display = "block";
-        } else {
-            customGroup.style.display = "none";
-            document.getElementById("adm_sumup_url").value = "";
-        }
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const totalVal = urlParams.get("tot");
-    const depVal = urlParams.get("dep");
-    const isPaid = urlParams.get("paid") === "true";
-
-    if (totalVal && depVal) {
-        document.getElementById("admin-section").style.display = "none";
-        document.getElementById("client-form-container").style.display = "block";
-
-        document.getElementById("client_total").value = total
+        if (select.value === "custom")
